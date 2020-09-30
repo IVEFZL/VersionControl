@@ -112,7 +112,7 @@ namespace Week04
                 xlSheet = xlWB.ActiveSheet;
 
                 // Tábla létrehozása
-                //CreateTable(); 
+                CreateTable(); 
 
                 // Control átadása a felhasználónak
                 xlApp.Visible = true;
