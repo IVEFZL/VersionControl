@@ -1,14 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Reflection;
 using System.Windows.Forms;
 using Excel = Microsoft.Office.Interop.Excel;
-using System.Reflection;
 
 namespace Week04
 {
@@ -16,6 +12,8 @@ namespace Week04
     {
         List<Flat> Flats;
         RealEstateEntities context = new RealEstateEntities();
+        string[] headers;
+        object[,] values;
 
         Excel.Application xlApp; 
         Excel.Workbook xlWB; 
@@ -31,6 +29,8 @@ namespace Week04
         {
             Flats = context.Flats.ToList();
         }
+
+        
 
         private string GetCell(int x, int y)
         {
@@ -49,9 +49,37 @@ namespace Week04
             return ExcelCoordinate;
         }
 
+        private void FormatTable() {
+            Excel.Range headerRange = xlSheet.get_Range(GetCell(1, 1), GetCell(1, headers.Length));
+            headerRange.Font.Bold = true;
+            headerRange.VerticalAlignment = Excel.XlVAlign.xlVAlignCenter;
+            headerRange.HorizontalAlignment = Excel.XlHAlign.xlHAlignCenter;
+            headerRange.EntireColumn.AutoFit();
+            headerRange.RowHeight = 40;
+            headerRange.Interior.Color = Color.LightBlue;
+            headerRange.BorderAround2(Excel.XlLineStyle.xlContinuous, Excel.XlBorderWeight.xlThick);
+
+            Excel.Range tableRange = xlSheet.get_Range(GetCell(2, 1), GetCell(1 + values.GetLength(0), values.GetLength(1)));
+            Excel.Range firstColRange = xlSheet.get_Range(GetCell(2, 1),  GetCell(values.GetLength(0), 1));
+            Excel.Range lastColRange = xlSheet.get_Range(GetCell(2, values.GetLength(1)), GetCell(values.GetLength(0), values.GetLength(1)));
+
+            tableRange.BorderAround2(Excel.XlLineStyle.xlContinuous, Excel.XlBorderWeight.xlThick);
+            firstColRange.Font.Bold = true;
+            lastColRange.Interior.Color = Color.LightGreen;
+            lastColRange.NumberFormat = "0.00";
+
+        }
+
+        /* Excel.Range tableRange = xlSheet.get_Range(
+                GetCell(2, 1),
+                GetCell(1 + values.GetLength(0), values.GetLength(1)));
+            Excel.Range firstColRange = xlSheet.get_Range(GetCell(1, 1), GetCell(values.GetLength(0), 1));
+            Excel.Range lastColRange = xlSheet.get_range(1, GetCell(1, values.GetLength(1))), GetCell(values.GetLength(0), values.GetLength(1));
+            xlSheet.get_Range(GetC)*/
+
         private void CreateTable()
         {
-            string[] headers = new string[] {
+            headers = new string[] {
             "Kód",
             "Eladó",
             "Oldal",
@@ -67,7 +95,7 @@ namespace Week04
                 xlSheet.Cells[i, 1] = headers[0];
             }
 
-            object[,] values = new object[Flats.Count, headers.Length];
+            values = new object[Flats.Count, headers.Length];
 
             int counter = 0;
             foreach (Flat f in Flats)
@@ -130,5 +158,7 @@ namespace Week04
                 xlApp = null;
             }
         }
+
+        
     }
 }
