@@ -23,14 +23,14 @@ namespace Week04
         {
             InitializeComponent();
             LoadData();
+            CreateExcel();
+            FormatTable();
         }
 
         private void LoadData()
         {
             Flats = context.Flats.ToList();
         }
-
-        
 
         private string GetCell(int x, int y)
         {
@@ -60,22 +60,14 @@ namespace Week04
             headerRange.BorderAround2(Excel.XlLineStyle.xlContinuous, Excel.XlBorderWeight.xlThick);
 
             Excel.Range tableRange = xlSheet.get_Range(GetCell(2, 1), GetCell(1 + values.GetLength(0), values.GetLength(1)));
-            Excel.Range firstColRange = xlSheet.get_Range(GetCell(2, 1),  GetCell(values.GetLength(0), 1));
-            Excel.Range lastColRange = xlSheet.get_Range(GetCell(2, values.GetLength(1)), GetCell(values.GetLength(0), values.GetLength(1)));
+            Excel.Range firstColRange = xlSheet.get_Range(GetCell(2, 1),  GetCell(values.GetLength(0)+1, 1));
+            Excel.Range lastColRange = xlSheet.get_Range(GetCell(2, values.GetLength(1)), GetCell(values.GetLength(0)+1, values.GetLength(1)));
 
             tableRange.BorderAround2(Excel.XlLineStyle.xlContinuous, Excel.XlBorderWeight.xlThick);
             firstColRange.Font.Bold = true;
             lastColRange.Interior.Color = Color.LightGreen;
             lastColRange.NumberFormat = "0.00";
-
         }
-
-        /* Excel.Range tableRange = xlSheet.get_Range(
-                GetCell(2, 1),
-                GetCell(1 + values.GetLength(0), values.GetLength(1)));
-            Excel.Range firstColRange = xlSheet.get_Range(GetCell(1, 1), GetCell(values.GetLength(0), 1));
-            Excel.Range lastColRange = xlSheet.get_range(1, GetCell(1, values.GetLength(1))), GetCell(values.GetLength(0), values.GetLength(1));
-            xlSheet.get_Range(GetC)*/
 
         private void CreateTable()
         {
@@ -92,7 +84,7 @@ namespace Week04
 
             for (int i = 1; i < headers.Length+1; i++)
             {
-                xlSheet.Cells[i, 1] = headers[0];
+                xlSheet.Cells[1, i] = headers[i-1];
             }
 
             values = new object[Flats.Count, headers.Length];
@@ -157,8 +149,6 @@ namespace Week04
                 xlWB = null;
                 xlApp = null;
             }
-        }
-
-        
+        }  
     }
 }
