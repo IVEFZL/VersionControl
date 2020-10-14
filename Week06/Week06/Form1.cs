@@ -17,23 +17,62 @@ namespace Week06
     public partial class Form1 : Form
     {
         BindingList<RateData> Rates = new BindingList<RateData>();
+        DateTime startDate = DateTime.Now.AddDays(-30);
+        DateTime endDate = DateTime.Now;
+        string currency = "EUR";
+        BindingList<string> Currencies = new BindingList<string>();
+
+
         public Form1()
         {
             InitializeComponent();
+            var mnbService = new MNBArfolyamServiceSoapClient();
+            var request = new GetCurrenciesRequestBody();
+            var response = mnbService.GetCurrencies(request);
+            var result = response.GetCurrenciesResult;
+            XmlDocument xml = new XmlDocument();
+            xml.LoadXml(result);
+
+            var childElement = (XmlElement)xml.DocumentElement.ChildNodes[0];
+
+
+            foreach (XmlElement element in childElement)
+            {
+  
+                string currency =element.InnerText;
+
+                Currencies.Add(currency);
+
+            }
+            foreach (var item in Currencies)
+            {
+                comboBox1.Items.Add(item);
+            }
+
+            refreshData();
+            
+        }
+
+        private void refreshData()
+        {
+            Rates.Clear();
             dataGridView1.DataSource = Rates;
-            webServiceCall();
+            webServiceCall(currency, startDate, endDate);
             charting();
         }
 
-        private void webServiceCall()
+        private void webServiceCall(string currency, DateTime startDate, DateTime endDate)
         {
             var mnbService = new MNBArfolyamServiceSoapClient();
 
+            string start = startDate.ToString();
+            string end = endDate.ToString();
+
             var request = new GetExchangeRatesRequestBody()
             {
-                currencyNames = "EUR",
-                startDate = "2020-01-01",
-                endDate = "2020-06-30"
+                currencyNames = currency,
+                startDate = start,
+                endDate = end
             };
 
             var response = mnbService.GetExchangeRates(request);
@@ -51,6 +90,8 @@ namespace Week06
                 rate.Date = DateTime.Parse(element.GetAttribute("date"));
 
                 var childElement = (XmlElement)element.ChildNodes[0];
+                if (childElement == null)
+                    continue;
                 rate.Currency = childElement.GetAttribute("curr");
 
                 var unit = decimal.Parse(childElement.GetAttribute("unit"));
@@ -77,6 +118,24 @@ namespace Week06
             chartArea.AxisX.MajorGrid.Enabled = false;
             chartArea.AxisY.MajorGrid.Enabled = false;
             chartArea.AxisY.IsStartedFromZero = false;
+        }
+
+        private void dateTimePicker1_ValueChanged(object sender, EventArgs e)
+        {
+            startDate = dateTimePicker1.Value;
+            refreshData();
+        }
+
+        private void dateTimePicker2_ValueChanged(object sender, EventArgs e)
+        {
+            endDate = dateTimePicker2.Value;
+            refreshData();
+        }
+
+        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            currency = comboBox1.Text;
+            refreshData();
         }
     }
 }
