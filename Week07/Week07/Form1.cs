@@ -30,10 +30,14 @@ namespace Week07
 
         private void Simulation()
         {
+            richTextBox1.Clear();
+            malePopulation.Clear();
+            femalePopulation.Clear();
             String populationLocation = textBoxFile.Text;
             Population = GetPopulation(@populationLocation);
             BirthProbabilities = GetBirth(@"C:\Temp\születés.csv");
             DeathProbabilities = GetDeath(@"C:\Temp\halál.csv");
+            
 
             // Végigmegyünk a vizsgált éveken
             for (int year = 2005; year <= numericUpDownZaroEv.Value; year++)
