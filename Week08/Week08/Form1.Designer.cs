@@ -36,6 +36,9 @@
             this.btn_Ball = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.btn_ColorPicker = new System.Windows.Forms.Button();
+            this.btn_Present = new System.Windows.Forms.Button();
+            this.btn_RibbonColor = new System.Windows.Forms.Button();
+            this.btn_BoxColor = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // mainPanel
@@ -96,11 +99,44 @@
             this.btn_ColorPicker.UseVisualStyleBackColor = false;
             this.btn_ColorPicker.Click += new System.EventHandler(this.btn_ColorPicker_Click);
             // 
+            // btn_Present
+            // 
+            this.btn_Present.Location = new System.Drawing.Point(338, 23);
+            this.btn_Present.Name = "btn_Present";
+            this.btn_Present.Size = new System.Drawing.Size(75, 23);
+            this.btn_Present.TabIndex = 5;
+            this.btn_Present.Text = "Present";
+            this.btn_Present.UseVisualStyleBackColor = true;
+            this.btn_Present.Click += new System.EventHandler(this.btn_Present_Click);
+            // 
+            // btn_RibbonColor
+            // 
+            this.btn_RibbonColor.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(192)))));
+            this.btn_RibbonColor.Location = new System.Drawing.Point(338, 95);
+            this.btn_RibbonColor.Name = "btn_RibbonColor";
+            this.btn_RibbonColor.Size = new System.Drawing.Size(75, 23);
+            this.btn_RibbonColor.TabIndex = 6;
+            this.btn_RibbonColor.UseVisualStyleBackColor = false;
+            this.btn_RibbonColor.Click += new System.EventHandler(this.btn_ColorPicker_Click);
+            // 
+            // btn_BoxColor
+            // 
+            this.btn_BoxColor.BackColor = System.Drawing.Color.Red;
+            this.btn_BoxColor.Location = new System.Drawing.Point(338, 66);
+            this.btn_BoxColor.Name = "btn_BoxColor";
+            this.btn_BoxColor.Size = new System.Drawing.Size(75, 23);
+            this.btn_BoxColor.TabIndex = 7;
+            this.btn_BoxColor.UseVisualStyleBackColor = false;
+            this.btn_BoxColor.Click += new System.EventHandler(this.btn_ColorPicker_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.btn_BoxColor);
+            this.Controls.Add(this.btn_RibbonColor);
+            this.Controls.Add(this.btn_Present);
             this.Controls.Add(this.btn_ColorPicker);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.btn_Ball);
@@ -122,6 +158,9 @@
         private System.Windows.Forms.Button btn_Ball;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button btn_ColorPicker;
+        private System.Windows.Forms.Button btn_Present;
+        private System.Windows.Forms.Button btn_RibbonColor;
+        private System.Windows.Forms.Button btn_BoxColor;
     }
 }
 
