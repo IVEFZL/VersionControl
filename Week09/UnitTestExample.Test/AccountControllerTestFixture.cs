@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using NuGet.Frameworks;
 using NUnit.Framework;
+using UnitTestExample.Controllers;
 
 namespace UnitTestExample.Test
 {
@@ -13,7 +14,14 @@ namespace UnitTestExample.Test
         [Test]
         public void TestValidateEmail(string email, bool expectedResult)
         {
-            // ...
+            // Arrange
+            var accountController = new AccountController();
+
+            // Act
+            var actualResult = accountController.ValidateEmail(email);
+
+            // Assert
+            Assert.AreEqual(expectedResult, actualResult);
         }
     }
 }
